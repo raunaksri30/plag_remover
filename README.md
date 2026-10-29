@@ -1,24 +1,47 @@
-# 📝 Plagiarism Removal Tool
+# 📝 Plagiarism Remover & AI Humanizer (Hybrid Edition)
 
-A context-aware desktop application built with Python, NLTK, and Tkinter that intelligently paraphrases text to reduce plagiarism while preserving grammatical structure, readability, and meaning.
+An intelligent desktop application built with Python, NLTK, PyTorch, Transformers, and Tkinter that paraphrases text to eliminate **both Plagiarism AND AI Detection (ZeroGPT, GPTZero, Turnitin AI)** while **strictly preserving meaning, natural flow, and grammatical accuracy**.
 
 ---
 
-## ✨ Features
+## ⚡ Why Was the Meaning Changing & Why Was it Flagged as GPT?
 
-- **Context-Aware POS Tagging**: Utilizes Penn Treebank tagging and WordNet mapping to replace words with synonyms that match their exact grammatical role (nouns, verbs, adjectives, adverbs).
-- **Named Entity & Stopword Protection**:
-  - Automatically skips proper nouns (`NNP`, `NNPS`) to preserve names, places, and brands.
-  - Leaves common English stopwords untouched to maintain sentence naturalness.
-- **Case & Formatting Preservation**:
-  - Retains original capitalization (UPPERCASE, Title Case, and lowercase).
-  - Preserves paragraphs, line breaks, and punctuation.
-- **Smart Detokenization**: Uses NLTK's `TreebankWordDetokenizer` to prevent unwanted spaces around punctuation and contractions (e.g., `don't`).
-- **Interactive GUI**:
-  - Clean desktop interface powered by Tkinter.
-  - One-click copy to clipboard (`📋 Copy Result`).
-  - Status indicators for processing and completed actions.
-- **Auto-Provisioning**: Automatically verifies and downloads necessary NLTK datasets on initial launch.
+1. **Plagiarism ≠ AI Detection**:
+   - Standard plagiarism checkers look for exact identical word sequences (*n*-grams).
+   - AI detectors (ZeroGPT, Turnitin AI) look for **Perplexity** (word predictability) and **Burstiness** (sentence length uniformity), plus distinct **ChatGPT clichés**.
+2. **The "Thesaurus Syndrome"**:
+   - Blindly replacing 100% of words created gibberish (*"systems that hear from datum"*).
+   - Replacing words without changing sentence cadence left the mathematical fingerprint of ChatGPT at **60–80% AI**.
+
+---
+
+## ✨ Key Features & Enhancements
+
+- **🎓 Academic / Research Paper Mode**:
+  - Automatically shifts intensity to **22% (Safe Scholarly Level)** to prevent technical drift.
+  - **Zero Contractions**: Preserves formal writing (*"cannot"*, *"do not"*, *"it is"* stay untouched).
+  - **In-Text Citation Protection**: Shields citation brackets like `[1]`, `[1-3]`, `[12, 15]` and `(Author et al., 2024)` from being altered.
+  - **Scholarly Phrasing**: Replaces ChatGPT clichés with peer-reviewed academic vocabulary (*"investigate"*, *"is fundamental to"*, *"demonstrates"*, *"numerous"*).
+- **👤 AI Humanizer (Bypass AI Detectors)**:
+  - **ChatGPT Cliché Cleanser**: Strips overused LLM transitions and filler words.
+  - **Burstiness Injection**: Splits long, uniform compound sentences into varied, punchy statements.
+- **🧠 AI Neural Paraphraser (T5 Transformer)**:
+  - Powered by Hugging Face `transformers` and PyTorch.
+  - Deep-learning sequence-to-sequence model that rewrites full sentences from scratch (like QuillBot).
+- **🎚️ Paraphrase Intensity Slider**:
+  - Lets you control substitution rate: **Academic (~22%)**, **Balanced (~35% - Recommended)**, or **Strong (~50%)**.
+- **🛡️ Protected Compound Phrases & Keywords**:
+  - Automatically preserves technical multi-word terms (*"machine learning"*, *"convolutional neural networks"*, *"standard deviation"*, etc.).
+  - Custom protection box for acronyms, datasets, and method names.
+- **📚 Word Frequency & Naturalness Filter**:
+  - Requires candidate synonyms to have real-world corpus frequency (`total_freq >= 2`), blocking archaic dictionary oddities.
+- **🔧 Morphological Inflection & Uncountable Noun Safeguards**:
+  - Keeps verbs in `-ing` (*building* → *making*) and 3rd person singular (*focuses* → *centers*).
+  - Protects mass nouns (*information*, *software*, *equipment*, *data*) from incorrect pluralization.
+- **🔍 Visual Diff Highlighter**:
+  - One-click button to highlight every modified word in yellow/gold, with live statistics.
+- **🧵 Responsive Threading**:
+  - Background worker thread prevents Tkinter from freezing or hanging during execution.
 
 ---
 
@@ -29,26 +52,7 @@ A context-aware desktop application built with Python, NLTK, and Tkinter that in
 - Python 3.8 or higher
 - `pip` package manager
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/raunaksri30/plag_remover.git
-cd plag_remover
-```
-
-### 2. (Optional) Create a Virtual Environment
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
+### 1. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -64,10 +68,19 @@ Run the application:
 python plag.py
 ```
 
-1. Paste or type your text into the **Input** box.
-2. Click **Remove Plagiarism**.
-3. View the paraphrased output in the **Result** box.
-4. Click **📋 Copy Result** to copy the transformed text to your clipboard.
+### 🎓 For Research Papers (IEEE, Springer, Elsevier, Turnitin):
+1. Check **`☑️ 🎓 Academic Paper Mode`**.
+2. Slider will auto-set to **22% (Safe Academic Level)**.
+3. Put model names or metrics into **Protect Terms** (e.g. `CNN, ResNet, p-value, F1-score`).
+4. Paste your section and click **🚀 Remove Plag & Humanize**.
+
+### ⚡ For General Essays & Content:
+1. Select your **Engine**:
+   - **⚡ Smart NLTK**: Fast, 100% offline, context-aware.
+   - **🧠 AI Neural Paraphraser (T5)**: Deep learning transformer rephrasing.
+2. Enable **`☑️ 👤 Humanize & Bypass AI`**.
+3. Adjust the **Intensity Slider** (Recommended: **35% - Balanced**).
+4. Click **🚀 Remove Plag & Humanize**.
 
 ---
 
@@ -75,18 +88,10 @@ python plag.py
 
 ```text
 plag_remover/
-├── .gitignore          # Git ignore configuration
 ├── plag.py             # Main application script & Tkinter GUI
-├── requirements.txt    # Python dependencies (NLTK)
+├── requirements.txt    # Python dependencies (NLTK & Transformers)
 └── README.md           # Documentation
 ```
-
----
-
-## 📦 Dependencies
-
-- [NLTK](https://www.nltk.org/) (`punkt`, `averaged_perceptron_tagger`, `wordnet`, `stopwords`, etc.)
-- Tkinter (standard library with Python)
 
 ---
 
